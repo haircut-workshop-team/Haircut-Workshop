@@ -1,35 +1,74 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Routes, Route, Navigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import authService from "./services/authService";
+
+// Components
+import Navbar from "./components/Navbar/Navbar";
+import ProtectedRoutes from "./components/ProtectedRoutes/ProtectedRoutes";
+
+// Pages
+import Home from "./pages/Home/Home";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Profile from "./pages/Profile/Profile";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
+  // check if the user is logged in on mount
+  useEffect(() => {
+    const checkAuth = async () => {
+      const token = localStorage.getItem("token");
+      if (token) {
+        try {
+          const response = await authService.getCurrentUser();
+          setUser(response.data);
+        } catch (error) {
+          console.error("Auth check failed", error);
+          localStorage.removeItem("token");
+        }
+      }
+      setLoading(false);
+    };
+    checkAuth();
+  }, []);
+
+  if (loading) {
+    return <div className="loading">Loading...</div>;
+  }
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div className="app">
+      <Navbar user={user} setUser={setUser} />
+      <main className="main-content">
+        <Routes>
+          {/* Public routes */}
+          <Route path="/" element={<Home user={user} />} />
+          <Route
+            path="/login"
+            element={user ? <Navigate to="/" /> : <Login setUser={setUser} />}
+          />
+          <Route
+            path="/register"
+            element={
+              user ? <Navigate to="/" /> : <Register setUser={setUser} />
+            }
+          />
+          {/* Protected routes */}
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoutes user={user}>
+                <Profile user={user} setUser={setUser} />
+              </ProtectedRoutes>
+            }
+          />
+          {/* Catch all - redirect to home */}
+          <Route path="*" element={<Navigate to="/" />} />
+        </Routes>
+      </main>
+    </div>
+  );
 }
 
-export default App
+export default App;

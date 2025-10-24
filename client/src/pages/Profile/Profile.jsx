@@ -1,5 +1,9 @@
 import { useState } from "react";
+import PropTypes from "prop-types";
 import api from "../../services/api";
+import { checkPasswordStrength } from "../../utils/PasswordStrength";
+import PasswordStrength from "../../components/PasswordStrength/PasswordStrength";
+import AvatarUpload from "../../components/AvatarUpload/AvatarUpload";
 import "./Profile.css";
 
 function Profile({ user, setUser }) {
@@ -13,6 +17,12 @@ function Profile({ user, setUser }) {
     newPassword: "",
     confirmPassword: "",
   });
+  const [newPasswordStrength, setNewPasswordStrength] = useState({
+    strength: 0,
+    label: "",
+    color: "",
+    checks: null,
+  });
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -24,13 +34,23 @@ function Profile({ user, setUser }) {
     });
   };
 
+  // handlePasswordChange for password change
   const handlePasswordChange = (e) => {
+    const { name, value } = e.target;
+
     setPasswordData({
       ...passwordData,
-      [e.target.name]: e.target.value,
+      [name]: value,
     });
+
+    // Check password strength for new password
+    if (name === "newPassword") {
+      const result = checkPasswordStrength(value);
+      setNewPasswordStrength(result);
+    }
   };
 
+  // handleUpdateProfile
   const handleUpdateProfile = async (e) => {
     e.preventDefault();
     setError("");
@@ -46,13 +66,14 @@ function Profile({ user, setUser }) {
       setUser(response.data);
       setMessage("Profile updated successfully!");
       setEditMode(false);
-      setLoading(false);
     } catch (err) {
       setError(err.message || "Failed to update profile");
+    } finally {
       setLoading(false);
     }
   };
 
+  // handleChangePassword for password change
   const handleChangePassword = async (e) => {
     e.preventDefault();
     setError("");
@@ -67,7 +88,7 @@ function Profile({ user, setUser }) {
     setLoading(true);
 
     try {
-      await api.request(`/users/password/${user.id}`, {
+      await api.request("/users/password/change", {
         method: "PUT",
         body: {
           currentPassword: passwordData.currentPassword,
@@ -81,11 +102,23 @@ function Profile({ user, setUser }) {
         newPassword: "",
         confirmPassword: "",
       });
-      setLoading(false);
+      setNewPasswordStrength({
+        strength: 0,
+        label: "",
+        color: "",
+        checks: null,
+      });
     } catch (err) {
       setError(err.message || "Failed to change password");
+    } finally {
       setLoading(false);
     }
+  };
+
+  // handleAvatarUpload
+  const handleAvatarUpload = (newAvatarUrl) => {
+    setUser({ ...user, profile_image: newAvatarUrl });
+    setMessage("Avatar updated successfully!");
   };
 
   return (
@@ -99,6 +132,11 @@ function Profile({ user, setUser }) {
         {/* Profile Information */}
         <section className="profile-section">
           <h3>Profile Information</h3>
+
+          <AvatarUpload
+            currentAvatar={user?.profile_image}
+            onUploadSuccess={handleAvatarUpload}
+          />
 
           <div className="profile-info">
             <p>
@@ -131,23 +169,29 @@ function Profile({ user, setUser }) {
           ) : (
             <form onSubmit={handleUpdateProfile} className="profile-form">
               <div className="form-group">
-                <label>Name</label>
+                <label htmlFor="profile-name">Name</label>
                 <input
                   type="text"
+                  id="profile-name"
                   name="name"
                   value={profileData.name}
                   onChange={handleProfileChange}
+                  autoComplete="name"
+                  disabled={loading}
                   required
                 />
               </div>
 
               <div className="form-group">
-                <label>Phone</label>
+                <label htmlFor="profile-phone">Phone</label>
                 <input
                   type="tel"
+                  id="profile-phone"
                   name="phone"
                   value={profileData.phone}
                   onChange={handleProfileChange}
+                  autoComplete="tel"
+                  disabled={loading}
                 />
               </div>
 
@@ -163,6 +207,7 @@ function Profile({ user, setUser }) {
                   type="button"
                   onClick={() => setEditMode(false)}
                   className="btn btn-secondary"
+                  disabled={loading}
                 >
                   Cancel
                 </button>
@@ -177,34 +222,51 @@ function Profile({ user, setUser }) {
 
           <form onSubmit={handleChangePassword} className="profile-form">
             <div className="form-group">
-              <label>Current Password</label>
+              <label htmlFor="current-password">Current Password</label>
               <input
                 type="password"
+                id="current-password"
                 name="currentPassword"
                 value={passwordData.currentPassword}
                 onChange={handlePasswordChange}
+                autoComplete="current-password"
+                disabled={loading}
                 required
               />
             </div>
 
             <div className="form-group">
-              <label>New Password</label>
+              <label htmlFor="new-password">New Password</label>
               <input
                 type="password"
+                id="new-password"
                 name="newPassword"
                 value={passwordData.newPassword}
                 onChange={handlePasswordChange}
+                autoComplete="new-password"
+                disabled={loading}
                 required
               />
             </div>
 
+            <PasswordStrength
+              password={passwordData.newPassword}
+              strength={newPasswordStrength.strength}
+              label={newPasswordStrength.label}
+              color={newPasswordStrength.color}
+              checks={newPasswordStrength.checks}
+            />
+
             <div className="form-group">
-              <label>Confirm New Password</label>
+              <label htmlFor="confirm-password">Confirm New Password</label>
               <input
                 type="password"
+                id="confirm-password"
                 name="confirmPassword"
                 value={passwordData.confirmPassword}
                 onChange={handlePasswordChange}
+                autoComplete="new-password"
+                disabled={loading}
                 required
               />
             </div>
@@ -222,5 +284,18 @@ function Profile({ user, setUser }) {
     </div>
   );
 }
+
+Profile.propTypes = {
+  user: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    name: PropTypes.string,
+    email: PropTypes.string.isRequired,
+    phone: PropTypes.string,
+    role: PropTypes.string.isRequired,
+    profile_image: PropTypes.string,
+    created_at: PropTypes.string,
+  }),
+  setUser: PropTypes.func.isRequired,
+};
 
 export default Profile;

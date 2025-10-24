@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
 import "./Home.css";
 
 export default function Home({ user }) {
@@ -48,15 +49,18 @@ export default function Home({ user }) {
         <h2>Why Choose Us?</h2>
         <div className="features-grid">
           <div className="feature-card">
-            <h3>🔧 Professional Barbers</h3>
+            <div className="feature-icon">🔧</div>
+            <h3>Professional Barbers</h3>
             <p>Experienced barbers with years of expertise</p>
           </div>
           <div className="feature-card">
-            <h3>⏰ Easy Booking</h3>
+            <div className="feature-icon">⏰</div>
+            <h3>Easy Booking</h3>
             <p>Book your appointment online in minutes</p>
           </div>
           <div className="feature-card">
-            <h3>⭐ Quality Service</h3>
+            <div className="feature-icon">⭐</div>
+            <h3>Quality Service</h3>
             <p>Top-rated services and customer satisfaction</p>
           </div>
         </div>
@@ -64,3 +68,12 @@ export default function Home({ user }) {
     </div>
   );
 }
+
+Home.propTypes = {
+  user: PropTypes.shape({
+    id: PropTypes.number,
+    name: PropTypes.string.isRequired,
+    email: PropTypes.string,
+    role: PropTypes.oneOf(["customer", "barber", "admin"]).isRequired,
+  }),
+};

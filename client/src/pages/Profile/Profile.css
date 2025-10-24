@@ -24,6 +24,7 @@
   background: linear-gradient(90deg, #667eea, #764ba2, #667eea);
   background-size: 200% 100%;
   animation: shimmer 3s linear infinite;
+  z-index: 0;
 }
 
 .profile-container h2 {
@@ -33,6 +34,7 @@
   padding-bottom: 0.5rem;
   position: relative;
   animation: fadeInDown 0.6s ease;
+  z-index: 1;
 }
 
 .profile-container h2::after {
@@ -42,6 +44,7 @@
   top: 50%;
   transform: translateY(-50%);
   animation: float 2s ease-in-out infinite;
+  z-index: 0;
 }
 
 .profile-section {
@@ -50,6 +53,7 @@
   border-bottom: 1px solid #eee;
   animation: fadeInUp 0.6s ease backwards;
   position: relative;
+  z-index: 1;
 }
 
 .profile-section:nth-child(2) {
@@ -79,6 +83,7 @@
   height: 2px;
   background: linear-gradient(90deg, #667eea, #764ba2);
   transition: width 0.3s ease;
+  z-index: 0;
 }
 
 .profile-section:hover h3::before {
@@ -117,6 +122,7 @@
   width: 2px;
   height: 60%;
   background: #667eea;
+  z-index: 0;
 }
 
 .profile-form {
@@ -165,7 +171,6 @@
   box-shadow: 0 15px 40px rgba(102, 126, 234, 0.2);
 }
 
-/* Keyframe Animations */
 @keyframes slideInUp {
   from {
     opacity: 0;
@@ -185,28 +190,6 @@
   to {
     opacity: 1;
     transform: translateY(0);
-  }
-}
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes slideInLeft {
-  from {
-    opacity: 0;
-    transform: translateX(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
   }
 }
 
@@ -231,9 +214,37 @@
   }
 }
 
+@keyframes inputPulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(102, 126, 234, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 10px rgba(102, 126, 234, 0);
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(-50%) translateY(0);
+  }
+  50% {
+    transform: translateY(-50%) translateY(-10px);
+  }
+}
+
 /* Responsive */
 @media (max-width: 768px) {
+  .profile-container {
+    padding: 1.5rem;
+  }
+
   .form-actions {
     flex-direction: column;
+  }
+
+  .profile-info p:hover {
+    transform: translateX(3px);
   }
 }

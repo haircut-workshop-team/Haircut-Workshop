@@ -1,17 +1,22 @@
 const fs = require("fs");
 const pool = require("../config/database");
 
-// Read the SQL file as plain text
-const schema = fs.readFileSync("./schema.sql", "utf8");
+async function runSQLFiles() {
+  try {
+    const schema = fs.readFileSync("./schema.sql", "utf8");
+    const addResetToken = fs.readFileSync("./add_reset_token.sql", "utf8");
 
-// Run the SQL commands in the file
-pool
-  .query(schema)
-  .then(() => {
-    console.log("✅ All tables created successfully!");
-    pool.end(); // close connection
-  })
-  .catch((err) => {
-    console.error("❌ Error creating tables:", err);
-    pool.end(); // close connection
-  });
+    await pool.query(schema);
+    console.log("✅ schema.sql executed successfully!");
+
+    await pool.query(addResetToken);
+    console.log("✅ add_reset_token.sql executed successfully!");
+
+    pool.end();
+  } catch (err) {
+    console.error("❌ Error executing SQL files:", err);
+    pool.end();
+  }
+}
+
+runSQLFiles();

@@ -1,5 +1,5 @@
 -- Users Table (customers, barbers, admin)
-CREATE TABLE users (
+CREATE TABLE IF NOT EXISTS users  (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     email VARCHAR(100) UNIQUE NOT NULL,
@@ -12,7 +12,7 @@ CREATE TABLE users (
 );
 
 --  Services Table
-CREATE TABLE services (
+CREATE TABLE IF NOT EXISTS services (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     description TEXT,
@@ -24,7 +24,7 @@ CREATE TABLE services (
 );
 
 -- Barbers Table (Extended info for barber users)
-CREATE TABLE barbers (
+CREATE TABLE IF NOT EXISTS barbers (
     id SERIAL PRIMARY KEY,
     user_id INTEGER UNIQUE REFERENCES users(id) ON DELETE CASCADE,
     specialties TEXT,
@@ -36,7 +36,7 @@ CREATE TABLE barbers (
 );
 
 -- Working Hours Table
-CREATE TABLE working_hours (
+CREATE TABLE IF NOT EXISTS working_hours (
     id SERIAL PRIMARY KEY,
     barber_id INTEGER REFERENCES barbers(id) ON DELETE CASCADE,
     day_of_week INTEGER NOT NULL CHECK (day_of_week BETWEEN 0 AND 6),
@@ -47,7 +47,7 @@ CREATE TABLE working_hours (
 );
 
 -- Appointments Table
-CREATE TABLE appointments (
+CREATE TABLE IF NOT EXISTS appointments (
     id SERIAL PRIMARY KEY,
     customer_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
     barber_id INTEGER REFERENCES barbers(id) ON DELETE CASCADE,
@@ -62,7 +62,7 @@ CREATE TABLE appointments (
 
 
 -- Reviews Table
-CREATE TABLE reviews (
+CREATE TABLE IF NOT EXISTS reviews (
     id SERIAL PRIMARY KEY,
     appointment_id INTEGER UNIQUE REFERENCES appointments(id) ON DELETE CASCADE,
     customer_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
@@ -77,10 +77,10 @@ CREATE TABLE reviews (
 --Make searches faster
 --Like an index in a book - helps find information quickly
 --Especially useful for frequently searched columns
-CREATE INDEX idx_appointments_customer ON appointments(customer_id);
-CREATE INDEX idx_appointments_barber ON appointments(barber_id);
-CREATE INDEX idx_appointments_date ON appointments(appointment_date);
-CREATE INDEX idx_reviews_barber ON reviews(barber_id);
-CREATE INDEX idx_users_email ON users(email);
+CREATE INDEX IF NOT EXISTS idx_appointments_customer ON appointments(customer_id);
+CREATE INDEX IF NOT EXISTS idx_appointments_barber ON appointments(barber_id);
+CREATE INDEX IF NOT EXISTS idx_appointments_date ON appointments(appointment_date);
+CREATE INDEX IF NOT EXISTS idx_reviews_barber ON reviews(barber_id);
+CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
 
 

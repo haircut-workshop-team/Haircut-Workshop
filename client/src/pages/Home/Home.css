@@ -27,6 +27,7 @@
     transparent 70%
   );
   animation: rotate 20s linear infinite;
+  z-index: 0;
 }
 
 .hero::after {
@@ -38,6 +39,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   animation: float 3s ease-in-out infinite;
+  z-index: 0;
 }
 
 .hero h1 {
@@ -143,6 +145,7 @@
     transparent
   );
   transition: left 0.5s ease;
+  z-index: 0;
 }
 
 .feature-card:hover::before {
@@ -165,10 +168,24 @@
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.3s ease;
+  z-index: 0;
 }
 
 .feature-card:hover::after {
   transform: scaleX(1);
+}
+
+.feature-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  display: inline-block;
+  transition: transform 0.3s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.feature-card:hover .feature-icon {
+  transform: scale(1.2) rotate(5deg);
 }
 
 .feature-card h3 {
@@ -176,10 +193,17 @@
   margin-bottom: 1rem;
   color: #667eea;
   transition: transform 0.3s ease;
+  position: relative;
+  z-index: 1;
 }
 
 .feature-card:hover h3 {
-  transform: scale(1.1);
+  transform: scale(1.05);
+}
+
+.feature-card p {
+  position: relative;
+  z-index: 1;
 }
 
 /* Keyframe Animations */
@@ -191,17 +215,6 @@
   to {
     opacity: 1;
     transform: translateY(0);
-  }
-}
-
-@keyframes slideInLeft {
-  from {
-    opacity: 0;
-    transform: translateX(-50px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
   }
 }
 
@@ -246,5 +259,9 @@
 
   .features-grid {
     grid-template-columns: 1fr;
+  }
+
+  .feature-icon {
+    font-size: 2.5rem;
   }
 }

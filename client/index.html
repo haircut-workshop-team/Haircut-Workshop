@@ -1,12 +1,63 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>client</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <!-- SEO Meta Tags -->
+    <meta
+      name="description"
+      content="Book your haircut appointment online at Haircut Workshop. Professional barbers, convenient scheduling, and quality service."
+    />
+    <meta
+      name="keywords"
+      content="haircut, barber, appointment, booking, salon, hair styling"
+    />
+    <meta name="author" content="Haircut Workshop" />
+
+    <!-- Mobile/PWA Meta Tags -->
+    <meta name="theme-color" content="#667eea" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:title"
+      content="Haircut Workshop - Book Your Appointment"
+    />
+    <meta
+      property="og:description"
+      content="Professional barber services with easy online booking"
+    />
+    <meta property="og:image" content="/og-image.jpg" />
+
+    <!-- Page Title -->
+    <title>Haircut Workshop - Book Your Appointment</title>
   </head>
   <body>
+    <noscript>
+      <div
+        style="
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          height: 100vh;
+          font-family: system-ui, -apple-system, sans-serif;
+          text-align: center;
+          padding: 2rem;
+        "
+      >
+        <h1>JavaScript Required</h1>
+        <p>Please enable JavaScript in your browser to use Haircut Workshop.</p>
+      </div>
+    </noscript>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>

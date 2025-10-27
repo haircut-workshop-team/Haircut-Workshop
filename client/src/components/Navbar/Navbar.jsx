@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import authService from "../../services/authService";
 import { SERVER_URL } from "../../services/api";
 import "./Navbar.css";
@@ -12,11 +12,16 @@ export default function Navbar({ user, setUser }) {
     authService.logout();
     setUser(null);
     navigate("/");
-    setIsMenuOpen(false); // Close menu after logout
+    setIsMenuOpen(false);
   };
 
   const closeMenu = () => {
     setIsMenuOpen(false);
+  };
+
+  const scrollTopAndClose = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    closeMenu();
   };
 
   const toggleMenu = () => {
@@ -26,7 +31,7 @@ export default function Navbar({ user, setUser }) {
   return (
     <nav className="navbar">
       <div className="nav-container">
-        <Link to="/" className="nav-logo" onClick={closeMenu}>
+        <Link to="/" className="nav-logo" onClick={scrollTopAndClose}>
           <h2>Haircut Workshop</h2>
         </Link>
 
@@ -45,14 +50,14 @@ export default function Navbar({ user, setUser }) {
         {/* Navigation Menu */}
         <ul className={`nav-menu ${isMenuOpen ? "active" : ""}`}>
           <li>
-            <Link to="/" onClick={closeMenu}>
+            <NavLink to="/" onClick={scrollTopAndClose}>
               Home
-            </Link>
+            </NavLink>
           </li>
           <li>
-            <Link to="/services" onClick={closeMenu}>
+            <NavLink to="/services" onClick={scrollTopAndClose}>
               Services
-            </Link>
+            </NavLink>
           </li>
 
           {user ? (
@@ -61,14 +66,14 @@ export default function Navbar({ user, setUser }) {
               {user.role === "customer" && (
                 <>
                   <li>
-                    <Link to="/booking" onClick={closeMenu}>
+                    <NavLink to="/booking" onClick={scrollTopAndClose}>
                       Book Now
-                    </Link>
+                    </NavLink>
                   </li>
                   <li>
-                    <Link to="/my-bookings" onClick={closeMenu}>
+                    <NavLink to="/my-bookings" onClick={scrollTopAndClose}>
                       My Bookings
-                    </Link>
+                    </NavLink>
                   </li>
                 </>
               )}
@@ -77,19 +82,22 @@ export default function Navbar({ user, setUser }) {
               {user.role === "barber" && (
                 <>
                   <li>
-                    <Link to="/barber/dashboard" onClick={closeMenu}>
+                    <NavLink to="/barber/dashboard" onClick={scrollTopAndClose}>
                       Dashboard
-                    </Link>
+                    </NavLink>
                   </li>
                   <li>
-                    <Link to="/barber/schedule" onClick={closeMenu}>
+                    <NavLink to="/barber/schedule" onClick={scrollTopAndClose}>
                       Schedule
-                    </Link>
+                    </NavLink>
                   </li>
                   <li>
-                    <Link to="/barber/appointments" onClick={closeMenu}>
+                    <NavLink
+                      to="/barber/appointments"
+                      onClick={scrollTopAndClose}
+                    >
                       Appointments
-                    </Link>
+                    </NavLink>
                   </li>
                 </>
               )}
@@ -98,29 +106,29 @@ export default function Navbar({ user, setUser }) {
               {user.role === "admin" && (
                 <>
                   <li>
-                    <Link to="/admin/dashboard" onClick={closeMenu}>
+                    <NavLink to="/admin/dashboard" onClick={scrollTopAndClose}>
                       Dashboard
-                    </Link>
+                    </NavLink>
                   </li>
                   <li>
-                    <Link to="/admin/barbers" onClick={closeMenu}>
-                      Manage Barbers
-                    </Link>
-                  </li>
-                  <li>
-                    <Link to="/admin/services" onClick={closeMenu}>
+                    <NavLink to="/admin/services" onClick={scrollTopAndClose}>
                       Manage Services
-                    </Link>
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink to="/admin/barbers" onClick={scrollTopAndClose}>
+                      Manage Barbers
+                    </NavLink>
                   </li>
                 </>
               )}
 
               {/* Common authenticated links */}
               <li>
-                <Link
+                <NavLink
                   to="/profile"
                   className="profile-link"
-                  onClick={closeMenu}
+                  onClick={scrollTopAndClose}
                 >
                   {user.profile_image ? (
                     <img
@@ -132,7 +140,7 @@ export default function Navbar({ user, setUser }) {
                     <span className="navbar-avatar-placeholder">👤</span>
                   )}
                   <span>{user.name}</span>
-                </Link>
+                </NavLink>
               </li>
               <li>
                 <button
@@ -147,14 +155,14 @@ export default function Navbar({ user, setUser }) {
           ) : (
             <>
               <li>
-                <Link to="/login" onClick={closeMenu}>
+                <NavLink to="/login" onClick={scrollTopAndClose}>
                   Login
-                </Link>
+                </NavLink>
               </li>
               <li>
-                <Link to="/register" onClick={closeMenu}>
+                <NavLink to="/register" onClick={scrollTopAndClose}>
                   Register
-                </Link>
+                </NavLink>
               </li>
             </>
           )}

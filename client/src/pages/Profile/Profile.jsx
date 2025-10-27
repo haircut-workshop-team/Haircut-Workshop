@@ -2,6 +2,7 @@ import { useState } from "react";
 import PropTypes from "prop-types";
 import api from "../../services/api";
 import { checkPasswordStrength } from "../../utils/PasswordStrength";
+import { formatDate } from "../../utils/formatters";
 import PasswordStrength from "../../components/PasswordStrength/PasswordStrength";
 import AvatarUpload from "../../components/AvatarUpload/AvatarUpload";
 import "./Profile.css";
@@ -146,8 +147,7 @@ function Profile({ user, setUser }) {
               <strong>Role:</strong> {user?.role}
             </p>
             <p>
-              <strong>Member since:</strong>{" "}
-              {new Date(user?.created_at).toLocaleDateString()}
+              <strong>Member since:</strong> {formatDate(user?.created_at)}
             </p>
           </div>
 

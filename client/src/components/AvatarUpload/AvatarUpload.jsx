@@ -19,7 +19,7 @@ function AvatarUpload({ currentAvatar, onUploadSuccess }) {
       return;
     }
 
-    // Validate file size (5MB)
+    // Validate file size (5MB max)
     if (file.size > 5 * 1024 * 1024) {
       setError("Image size should be less than 5MB");
       return;

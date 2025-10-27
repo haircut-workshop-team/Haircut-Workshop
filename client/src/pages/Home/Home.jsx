@@ -35,10 +35,18 @@ export default function Home({ user }) {
           </div>
         ) : (
           <div className="hero-buttons">
-            <Link to="/register" className="btn btn-primary">
+            <Link
+              to="/register"
+              className="btn btn-primary"
+              onClick={() => window.scrollTo(0, 0)}
+            >
               Get Started
             </Link>
-            <Link to="/login" className="btn btn-secondary">
+            <Link
+              to="/login"
+              className="btn btn-secondary"
+              onClick={() => window.scrollTo(0, 0)}
+            >
               Login
             </Link>
           </div>

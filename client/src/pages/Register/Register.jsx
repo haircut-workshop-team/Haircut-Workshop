@@ -164,7 +164,10 @@ function Register({ setUser }) {
         </form>
 
         <p className="auth-link">
-          Already have an account? <Link to="/login">Login here</Link>
+          Already have an account?{" "}
+          <Link to="/login" onClick={() => window.scrollTo(0, 0)}>
+            Login here
+          </Link>
         </p>
       </div>
     </div>

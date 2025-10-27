@@ -93,7 +93,10 @@ function Login({ setUser }) {
         <div className="auth-links">
           <Link to="/forgot-password">Forgot Password?</Link>
           <p>
-            Don't have an account? <Link to="/register">Register</Link>
+            Don't have an account?{" "}
+            <Link to="/register" onClick={() => window.scrollTo(0, 0)}>
+              Register
+            </Link>
           </p>
         </div>
       </div>

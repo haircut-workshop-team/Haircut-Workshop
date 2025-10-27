@@ -1,0 +1,588 @@
+.admin-dashboard {
+  padding: 2rem;
+  animation: fadeIn 0.6s ease-in;
+}
+
+/* ============================================
+   HEADER
+   ============================================ */
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  animation: slideInDown 0.5s ease;
+}
+
+.dashboard-header h1 {
+  font-size: 2.5rem;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 0.5rem;
+}
+
+.dashboard-subtitle {
+  color: #666;
+  font-size: 1.1rem;
+}
+
+/* ============================================
+   STATS GRID
+   ============================================ */
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  background: white;
+  padding: 2rem;
+  border-radius: 15px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  transition: all 0.3s ease;
+  animation: fadeInUp 0.6s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, #667eea, #764ba2);
+  transform: scaleX(0);
+  transition: transform 0.5s ease;
+}
+
+.stat-card:hover::before {
+  transform: scaleX(1);
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+}
+
+.stat-icon {
+  font-size: 3rem;
+  width: 70px;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 15px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  animation: float 3s ease-in-out infinite;
+}
+
+.stat-content h3 {
+  font-size: 2rem;
+  color: #2c3e50;
+  margin-bottom: 0.25rem;
+}
+
+.stat-content p {
+  color: #7f8c8d;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+/* Stat card color variants */
+.stat-services .stat-icon {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+}
+
+.stat-bookings .stat-icon {
+  background: linear-gradient(135deg, #f093fb, #f5576c);
+}
+
+.stat-revenue .stat-icon {
+  background: linear-gradient(135deg, #4facfe, #00f2fe);
+}
+
+.stat-barbers .stat-icon {
+  background: linear-gradient(135deg, #43e97b, #38f9d7);
+}
+
+/* ============================================
+   DASHBOARD CONTENT GRID
+   ============================================ */
+
+.dashboard-content {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 1.5rem;
+}
+
+.dashboard-card {
+  background: white;
+  border-radius: 15px;
+  padding: 1.5rem;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+  animation: fadeInUp 0.8s ease;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.card-header h2 {
+  font-size: 1.5rem;
+  color: #2c3e50;
+}
+
+.chart-subtitle,
+.activities-subtitle {
+  color: #999;
+  font-size: 0.9rem;
+}
+
+.btn-link {
+  background: none;
+  border: none;
+  color: #667eea;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-link:hover {
+  color: #764ba2;
+  transform: translateX(5px);
+}
+
+/* ============================================
+   RECENT BOOKINGS TABLE
+   ============================================ */
+
+.recent-bookings {
+  grid-column: span 12;
+}
+
+.bookings-table-container {
+  overflow-x: auto;
+}
+
+.bookings-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.bookings-table thead {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+}
+
+.bookings-table th {
+  padding: 1rem;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.bookings-table th:first-child {
+  border-top-left-radius: 10px;
+}
+
+.bookings-table th:last-child {
+  border-top-right-radius: 10px;
+}
+
+.bookings-table tbody tr {
+  border-bottom: 1px solid #f0f0f0;
+  transition: all 0.3s ease;
+}
+
+.bookings-table tbody tr:hover {
+  background: #f8f9fa;
+  transform: scale(1.01);
+}
+
+.bookings-table td {
+  padding: 1rem;
+  color: #555;
+}
+
+.customer-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.customer-info strong {
+  color: #2c3e50;
+}
+
+.customer-email {
+  font-size: 0.85rem;
+  color: #999;
+}
+
+.status-badge {
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: capitalize;
+  display: inline-block;
+}
+
+.status-pending {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.status-confirmed {
+  background: #cfe2ff;
+  color: #084298;
+}
+
+.status-completed {
+  background: #d1e7dd;
+  color: #0f5132;
+}
+
+.status-cancelled {
+  background: #f8d7da;
+  color: #842029;
+}
+
+.status-no-show {
+  background: #e2e3e5;
+  color: #41464b;
+}
+
+.price-cell {
+  font-weight: 700;
+  color: #27ae60;
+}
+
+/* ============================================
+   REVENUE CHART
+   ============================================ */
+
+.revenue-chart {
+  grid-column: span 8;
+}
+
+.chart-container {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  height: 250px;
+  padding: 1rem 0;
+}
+
+.chart-bar-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.chart-bar {
+  width: 100%;
+  background: linear-gradient(180deg, #667eea, #764ba2);
+  border-radius: 10px 10px 0 0;
+  position: relative;
+  transition: all 0.3s ease;
+  animation: expandHeight 0.8s ease;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 0.5rem;
+  min-height: 20px;
+}
+
+.chart-bar:hover {
+  background: linear-gradient(180deg, #764ba2, #667eea);
+  transform: scale(1.05);
+}
+
+.chart-value {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: white;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.chart-label {
+  font-size: 0.85rem;
+  color: #666;
+  font-weight: 600;
+}
+
+@keyframes expandHeight {
+  from {
+    height: 0;
+  }
+}
+
+/* ============================================
+   RECENT ACTIVITIES
+   ============================================ */
+
+.recent-activities {
+  grid-column: span 4;
+}
+
+.activities-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.activity-item {
+  display: flex;
+  gap: 1rem;
+  padding: 0.75rem;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+  animation: slideInRight 0.5s ease;
+}
+
+.activity-item:hover {
+  background: #f8f9fa;
+  transform: translateX(5px);
+}
+
+.activity-icon {
+  font-size: 1.8rem;
+  width: 45px;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #667eea15, #764ba215);
+  flex-shrink: 0;
+}
+
+.activity-content p {
+  color: #2c3e50;
+  margin-bottom: 0.25rem;
+  font-size: 0.95rem;
+}
+
+.activity-time {
+  font-size: 0.8rem;
+  color: #999;
+}
+
+/* ============================================
+   QUICK ACTIONS
+   ============================================ */
+
+.quick-actions {
+  grid-column: span 12;
+}
+
+.actions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.action-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 2rem 1rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 15px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.action-btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #667eea10, #764ba210);
+  transform: scale(0);
+  transition: transform 0.4s ease;
+  border-radius: 15px;
+}
+
+.action-btn:hover::before {
+  transform: scale(1);
+}
+
+.action-btn:hover {
+  border-color: #667eea;
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(102, 126, 234, 0.2);
+}
+
+.action-icon {
+  font-size: 2.5rem;
+  transition: transform 0.3s ease;
+}
+
+.action-btn:hover .action-icon {
+  transform: scale(1.2) rotate(5deg);
+}
+
+.action-text {
+  font-weight: 600;
+  color: #2c3e50;
+  position: relative;
+  z-index: 1;
+}
+
+/* ============================================
+   EMPTY STATE
+   ============================================ */
+
+.empty-state {
+  text-align: center;
+  padding: 3rem;
+  color: #999;
+}
+
+.empty-state p {
+  font-size: 1.1rem;
+}
+
+/* ============================================
+   LOADING STATE
+   ============================================ */
+
+.dashboard-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  gap: 1.5rem;
+}
+
+.dashboard-loading p {
+  font-size: 1.2rem;
+  color: #666;
+  font-weight: 600;
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+
+@media (max-width: 1200px) {
+  .revenue-chart {
+    grid-column: span 12;
+  }
+
+  .recent-activities {
+    grid-column: span 12;
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-dashboard {
+    padding: 1rem;
+  }
+
+  .dashboard-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .dashboard-header h1 {
+    font-size: 2rem;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+  }
+
+  .stat-card {
+    padding: 1.5rem;
+  }
+
+  .stat-icon {
+    font-size: 2.5rem;
+    width: 60px;
+    height: 60px;
+  }
+
+  .stat-content h3 {
+    font-size: 1.5rem;
+  }
+
+  .bookings-table {
+    font-size: 0.85rem;
+  }
+
+  .bookings-table th,
+  .bookings-table td {
+    padding: 0.75rem 0.5rem;
+  }
+
+  .chart-container {
+    height: 200px;
+  }
+
+  .chart-value {
+    font-size: 0.7rem;
+  }
+
+  .actions-grid {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  }
+
+  .action-btn {
+    padding: 1.5rem 0.75rem;
+  }
+
+  .action-icon {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .bookings-table-container {
+    overflow-x: scroll;
+  }
+
+  .bookings-table {
+    min-width: 700px;
+  }
+
+  .actions-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}

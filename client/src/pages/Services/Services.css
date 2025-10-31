@@ -1,0 +1,111 @@
+.services-page {
+  text-align: center;
+  padding: 3rem 1rem;
+  animation: fadeIn 0.8s ease;
+  min-height: 70vh;
+}
+
+/* ============================================
+   Header Section
+   ============================================ */
+
+.services-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 4rem 2rem;
+  border-radius: 15px;
+  margin-bottom: 3rem;
+  position: relative;
+  overflow: hidden;
+  animation: fadeInUp 0.8s ease;
+  box-shadow: 0 10px 40px rgba(102, 126, 234, 0.3);
+}
+
+.services-header::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.1) 0%,
+    transparent 70%
+  );
+  animation: rotate 20s linear infinite;
+}
+
+.services-header::after {
+  content: "✂️";
+  position: absolute;
+  font-size: 150px;
+  opacity: 0.1;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: float 3s ease-in-out infinite;
+}
+
+.services-header h1 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  position: relative;
+  z-index: 1;
+  animation: slideInLeft 0.8s ease;
+  font-weight: 700;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.services-subtitle {
+  font-size: 1.2rem;
+  margin-bottom: 0;
+  position: relative;
+  z-index: 1;
+  animation: slideInRight 0.8s ease;
+  opacity: 0.95;
+}
+
+/* ============================================
+   Services Grid
+   ============================================ */
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  padding: 1rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  animation: fadeInUp 0.8s ease;
+}
+
+/* ============================================
+   Loading State
+   ============================================ */
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 5rem 2rem;
+  animation: fadeIn 0.5s ease;
+}
+
+.spinner {
+  width: 60px;
+  height: 60px;
+  border: 5px solid #f3f3f3;
+  border-top: 5px solid #667eea;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1.5rem;
+}
+
+.loading-text {
+  font-size: 1.2rem;
+  color: #667eea;
+  font-weight: 600;
+  animation: pulse 1.5s ease infinite;
+}

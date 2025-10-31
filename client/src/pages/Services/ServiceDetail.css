@@ -1,0 +1,419 @@
+/* ============================================
+   Service Detail Page Styles
+   ============================================ */
+
+.service-detail-page {
+  padding: 3rem 1rem;
+  display: flex;
+  justify-content: center;
+  min-height: 70vh;
+  animation: fadeIn 0.8s ease;
+}
+
+.service-detail-container {
+  max-width: 1000px;
+  width: 100%;
+}
+
+/* ============================================
+   Back Navigation Button
+   ============================================ */
+
+.back-nav-btn {
+  background: transparent;
+  border: none;
+  color: #667eea;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  margin-bottom: 2rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.back-nav-btn:hover {
+  background: #f0f4ff;
+  transform: translateX(-5px);
+}
+
+/* ============================================
+   Service Detail Card
+   ============================================ */
+
+.service-detail-card {
+  position: relative;
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: all 0.4s ease;
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 3rem;
+  padding: 3rem;
+  animation: fadeInUp 0.8s ease;
+}
+
+.service-detail-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(102, 126, 234, 0.05),
+    transparent
+  );
+  transition: left 0.6s ease;
+}
+
+.service-detail-card:hover::before {
+  left: 100%;
+}
+
+.service-detail-card::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: linear-gradient(90deg, #667eea, #764ba2);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s ease;
+}
+
+.service-detail-card:hover::after {
+  transform: scaleX(1);
+}
+
+/* ============================================
+   Service Image
+   ============================================ */
+
+.service-detail-image {
+  position: relative;
+  border-radius: 15px;
+  overflow: hidden;
+  background: #f8f9fa;
+  min-height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.service-detail-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.service-detail-card:hover .service-detail-image img {
+  transform: scale(1.05);
+}
+
+.service-detail-image.no-image {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.no-image-placeholder {
+  text-align: center;
+  color: white;
+}
+
+.no-image-placeholder .icon {
+  font-size: 5rem;
+  display: block;
+  margin-bottom: 1rem;
+  animation: float 3s ease-in-out infinite;
+}
+
+.no-image-placeholder p {
+  font-size: 1.1rem;
+  opacity: 0.9;
+}
+
+/* ============================================
+   Service Info
+   ============================================ */
+
+.service-detail-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.service-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  border-bottom: 2px solid #f0f0f0;
+  padding-bottom: 1rem;
+}
+
+.service-header h1 {
+  font-size: 2.5rem;
+  color: #2c3e50;
+  margin: 0;
+  flex: 1;
+  transition: color 0.3s ease;
+}
+
+.service-detail-card:hover .service-header h1 {
+  color: #667eea;
+}
+
+.service-id {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.service-description {
+  color: #555;
+  font-size: 1.1rem;
+  line-height: 1.8;
+  margin: 0;
+}
+
+/* ============================================
+   Service Meta (Price & Duration)
+   ============================================ */
+
+.service-meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin: 1rem 0;
+}
+
+.meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1.5rem;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.price-item {
+  background: linear-gradient(135deg, #fff5f5, #ffe5e5);
+  border: 2px solid #ffcccc;
+}
+
+.duration-item {
+  background: linear-gradient(135deg, #f0f4ff, #e5ebff);
+  border: 2px solid #ccd9ff;
+}
+
+.meta-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.meta-label {
+  font-size: 0.85rem;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 600;
+}
+
+.meta-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.meta-value.price {
+  color: #e74c3c;
+}
+
+.meta-value.duration {
+  color: #3498db;
+}
+
+/* ============================================
+   Action Buttons
+   ============================================ */
+
+.service-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1rem 2rem;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 1rem;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-icon {
+  font-size: 1.2rem;
+}
+
+.btn-book {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+  flex: 1;
+}
+
+.btn-book::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  transition: left 0.5s ease;
+}
+
+.btn-book:hover::before {
+  left: 100%;
+}
+
+.btn-book:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+}
+
+.btn-secondary {
+  background: white;
+  color: #667eea;
+  border: 2px solid #667eea;
+}
+
+.btn-secondary:hover {
+  background: #667eea;
+  color: white;
+  transform: translateY(-3px);
+}
+
+/* ============================================
+   Service Features
+   ============================================ */
+
+.service-features {
+  background: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: 12px;
+  margin-top: 1rem;
+}
+
+.service-features h3 {
+  color: #2c3e50;
+  margin-bottom: 1rem;
+  font-size: 1.3rem;
+}
+
+.service-features ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.service-features li {
+  padding: 0.6rem 0;
+  color: #555;
+  font-size: 1rem;
+  line-height: 1.6;
+  transition: all 0.3s ease;
+}
+
+.service-features li:hover {
+  color: #667eea;
+  transform: translateX(5px);
+}
+
+/* ============================================
+   Loading & Error States
+   ============================================ */
+
+.loading-container,
+.error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 5rem 2rem;
+  text-align: center;
+  animation: fadeIn 0.5s ease;
+}
+
+.spinner {
+  width: 60px;
+  height: 60px;
+  border: 5px solid #f3f3f3;
+  border-top: 5px solid #667eea;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1.5rem;
+}
+
+.loading-text {
+  font-size: 1.2rem;
+  color: #667eea;
+  font-weight: 600;
+}
+
+.error-container {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.error-icon {
+  font-size: 4rem;
+  margin-bottom: 1.5rem;
+  animation: shake 0.5s ease;
+}
+
+.error-container h3 {
+  font-size: 1.8rem;
+  color: #2c3e50;
+  margin-bottom: 1rem;
+}
+
+.error-text {
+  font-size: 1.1rem;
+  color: #666;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+.error-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}

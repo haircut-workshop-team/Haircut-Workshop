@@ -1,0 +1,124 @@
+.my-bookings-container {
+  max-width: 1200px;
+  margin: 50px auto;
+  padding: 2rem;
+  animation: fadeIn 0.6s ease;
+}
+
+.my-bookings-container h2 {
+  text-align: center;
+  color: #2c3e50;
+  margin-bottom: 2rem;
+  font-size: 2rem;
+  position: relative;
+  padding-bottom: 1rem;
+}
+
+.my-bookings-container h2::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 4px;
+  background: linear-gradient(90deg, #667eea, #764ba2);
+  border-radius: 2px;
+}
+
+.bookings-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.bookings-tabs button {
+  padding: 0.8rem 2rem;
+  border: 2px solid #667eea;
+  background: white;
+  color: #667eea;
+  border-radius: 25px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+}
+
+.bookings-tabs button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+}
+
+.bookings-tabs button.active {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  border-color: transparent;
+}
+
+.appointments-list {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.my-bookings-container p {
+  text-align: center;
+  color: #888;
+  font-size: 1.1rem;
+  margin-top: 3rem;
+  animation: fadeIn 0.5s ease;
+}
+
+/* Loading State */
+.loading-spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 300px;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 5px solid #f3f3f3;
+  border-top: 5px solid #667eea;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .my-bookings-container {
+    padding: 1rem;
+  }
+
+  .my-bookings-container h2 {
+    font-size: 1.6rem;
+  }
+
+  .bookings-tabs {
+    flex-direction: column;
+  }
+
+  .bookings-tabs button {
+    width: 100%;
+  }
+}

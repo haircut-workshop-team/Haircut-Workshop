@@ -1,7 +1,7 @@
+import api from "../../services/api";
 import { useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import api from "../../services/api";
-import { checkPasswordStrength } from "../../utils/PasswordStrength";
+import { checkPasswordStrength } from "../../utils/passwordStrength";
 import PasswordStrength from "../../components/PasswordStrength/PasswordStrength";
 import "./ResetPassword.css";
 

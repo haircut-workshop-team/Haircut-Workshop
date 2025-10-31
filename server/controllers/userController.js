@@ -290,6 +290,61 @@ const userController = {
       });
     }
   },
+
+  // Delete user account
+  deleteAccount: async (req, res) => {
+    try {
+      const userId = req.user.id;
+      const { password } = req.body;
+
+      // Validate password provided
+      if (!password) {
+        return res.status(400).json({
+          success: false,
+          message: "Password is required to delete account",
+        });
+      }
+
+      // Get user to verify password (must include password field)
+      const user = await userModel.findByIdWithPassword(userId);
+      if (!user) {
+        return res.status(404).json({
+          success: false,
+          message: "User not found",
+        });
+      }
+
+      // Verify password
+      const isValidPassword = await bcrypt.compare(password, user.password);
+      if (!isValidPassword) {
+        return res.status(401).json({
+          success: false,
+          message: "Incorrect password",
+        });
+      }
+
+      // Delete profile image if exists
+      if (user.profile_image) {
+        deleteFile(user.profile_image);
+      }
+
+      // Delete user account
+      await userModel.deleteUser(userId);
+
+      console.log(`🗑️ User account deleted: ${user.email} (ID: ${userId})`);
+
+      res.json({
+        success: true,
+        message: "Account deleted successfully",
+      });
+    } catch (error) {
+      console.error("Delete account error:", error);
+      res.status(500).json({
+        success: false,
+        message: "Failed to delete account",
+      });
+    }
+  },
 };
 
 module.exports = userController;

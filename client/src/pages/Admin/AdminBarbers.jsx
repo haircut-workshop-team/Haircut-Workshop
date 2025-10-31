@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import Swal from "sweetalert2";
 import barberService from "../../services/barberService";
 import "./AdminBarbers.css";
 
@@ -40,11 +41,12 @@ function AdminBarbers() {
     }
   }, [success, error]);
 
-  // Load all barbers
+  // Load all barbers (ADMIN endpoint)
   const loadBarbers = async () => {
     try {
       setLoading(true);
-      const data = await barberService.getAllBarbers();
+      // ✅ Use admin-specific endpoint
+      const data = await barberService.getAllBarbersAdmin();
       setBarbers(data);
       setError("");
     } catch (err) {
@@ -135,16 +137,31 @@ function AdminBarbers() {
 
   // Handle delete barber
   const handleDelete = async (barber) => {
-    const confirmed = window.confirm(
-      `Are you sure you want to delete "${barber.name}"?\n\nThis will convert their account to a customer role.`
-    );
+    const result = await Swal.fire({
+      title: "Delete Barber?",
+      html: `Are you sure you want to delete <strong>"${barber.name}"</strong>?<br><br>This will convert their account to a customer role.`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "Cancel",
+    });
 
-    if (!confirmed) return;
+    if (!result.isConfirmed) return;
 
     try {
       await barberService.deleteBarber(barber.id);
       setSuccess(`Barber "${barber.name}" deleted successfully!`);
       loadBarbers();
+
+      Swal.fire({
+        title: "Deleted!",
+        text: `Barber "${barber.name}" has been deleted successfully.`,
+        icon: "success",
+        timer: 2000,
+        showConfirmButton: false,
+      });
     } catch (err) {
       setError(err.message || "Failed to delete barber");
       console.error("Delete error:", err);
@@ -213,48 +230,66 @@ function AdminBarbers() {
                   <th>Experience</th>
                   <th>Rating</th>
                   <th>Appointments</th>
-                  <th>Actions</th>
+                  <th className="actions-header">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {barbers.map((barber) => (
-                  <tr key={barber.id}>
+                  <tr key={barber.id} className="barber-row">
                     <td>
                       <strong>{barber.name}</strong>
                     </td>
                     <td>{barber.email}</td>
-                    <td>{barber.phone || "—"}</td>
-                    <td>{barber.specialties || "—"}</td>
+                    <td>{barber.phone || "–"}</td>
+                    <td>{barber.specialties || "–"}</td>
                     <td>
-                      {barber.years_experience
-                        ? `${barber.years_experience} years`
-                        : "—"}
+                      <div className="experience-badge">
+                        {barber.years_experience
+                          ? `${barber.years_experience} years`
+                          : "–"}
+                      </div>
                     </td>
                     <td>
-                      ⭐ {barber.rating ? barber.rating.toFixed(1) : "0.0"}
-                      <span className="reviews-count">
-                        ({barber.total_reviews} reviews)
-                      </span>
+                      <div className="rating-cell">
+                        <div className="rating-value">
+                          <span className="rating-star">⭐</span>
+                          {barber.rating
+                            ? Number(barber.rating).toFixed(1)
+                            : "0.0"}
+                        </div>
+                        <span className="reviews-badge">
+                          {barber.total_reviews || 0} reviews
+                        </span>
+                      </div>
                     </td>
                     <td>
-                      {barber.total_appointments || 0}
-                      <span className="completed-count">
-                        ({barber.completed_appointments || 0} completed)
-                      </span>
+                      <div className="appointments-cell">
+                        <div className="appointments-total">
+                          {barber.total_appointments || 0}
+                        </div>
+                        <span className="completed-badge">
+                          {barber.completed_appointments || 0} completed
+                        </span>
+                      </div>
                     </td>
-                    <td className="actions">
-                      <button
-                        onClick={() => handleEditClick(barber)}
-                        className="btn-action btn-edit"
-                      >
-                        Edit
-                      </button>
-                      <button
-                        onClick={() => handleDelete(barber)}
-                        className="btn-action btn-delete"
-                      >
-                        Delete
-                      </button>
+                    <td className="actions-cell">
+                      {/* Floating Action Buttons */}
+                      <div className="row-actions">
+                        <button
+                          onClick={() => handleEditClick(barber)}
+                          className="table-action-btn edit-btn"
+                          title="Edit Barber"
+                        >
+                          ✏️
+                        </button>
+                        <button
+                          onClick={() => handleDelete(barber)}
+                          className="table-action-btn delete-btn"
+                          title="Delete Barber"
+                        >
+                          🗑️
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))}

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import authService from "../../services/authService";
 import { SERVER_URL } from "../../services/api";
 import "./Navbar.css";
@@ -12,30 +12,24 @@ export default function Navbar({ user, setUser }) {
     authService.logout();
     setUser(null);
     navigate("/");
+    window.scrollTo(0, 0);
     setIsMenuOpen(false);
   };
 
-  const closeMenu = () => {
-    setIsMenuOpen(false);
-  };
-
+  const closeMenu = () => setIsMenuOpen(false);
   const scrollTopAndClose = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo(0, 0);
     closeMenu();
   };
-
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
+  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   return (
     <nav className="navbar">
       <div className="nav-container">
-        <Link to="/" className="nav-logo" onClick={scrollTopAndClose}>
-          <h2>Haircut Workshop</h2>
-        </Link>
+        <NavLink to="/" className="nav-logo" onClick={scrollTopAndClose}>
+          <h2>StyleSync</h2>
+        </NavLink>
 
-        {/* Hamburger Button */}
         <button
           className={`hamburger ${isMenuOpen ? "active" : ""}`}
           onClick={toggleMenu}
@@ -47,7 +41,6 @@ export default function Navbar({ user, setUser }) {
           <span></span>
         </button>
 
-        {/* Navigation Menu */}
         <ul className={`nav-menu ${isMenuOpen ? "active" : ""}`}>
           <li>
             <NavLink to="/" onClick={scrollTopAndClose}>
@@ -62,7 +55,6 @@ export default function Navbar({ user, setUser }) {
 
           {user ? (
             <>
-              {/* Customer links */}
               {user.role === "customer" && (
                 <>
                   <li>
@@ -78,7 +70,6 @@ export default function Navbar({ user, setUser }) {
                 </>
               )}
 
-              {/* Barber links */}
               {user.role === "barber" && (
                 <>
                   <li>
@@ -102,7 +93,6 @@ export default function Navbar({ user, setUser }) {
                 </>
               )}
 
-              {/* Admin links */}
               {user.role === "admin" && (
                 <>
                   <li>
@@ -111,19 +101,18 @@ export default function Navbar({ user, setUser }) {
                     </NavLink>
                   </li>
                   <li>
-                    <NavLink to="/admin/services" onClick={scrollTopAndClose}>
-                      Manage Services
+                    <NavLink to="/admin/barbers" onClick={scrollTopAndClose}>
+                      Manage Barbers
                     </NavLink>
                   </li>
                   <li>
-                    <NavLink to="/admin/barbers" onClick={scrollTopAndClose}>
-                      Manage Barbers
+                    <NavLink to="/admin/services" onClick={scrollTopAndClose}>
+                      Manage Services
                     </NavLink>
                   </li>
                 </>
               )}
 
-              {/* Common authenticated links */}
               <li>
                 <NavLink
                   to="/profile"
@@ -142,12 +131,9 @@ export default function Navbar({ user, setUser }) {
                   <span>{user.name}</span>
                 </NavLink>
               </li>
+
               <li>
-                <button
-                  onClick={handleLogout}
-                  className="logout-btn"
-                  aria-label="Logout from account"
-                >
+                <button onClick={handleLogout} className="logout-btn">
                   Logout
                 </button>
               </li>
@@ -168,7 +154,6 @@ export default function Navbar({ user, setUser }) {
           )}
         </ul>
 
-        {/* Overlay for mobile menu */}
         {isMenuOpen && <div className="menu-overlay" onClick={closeMenu}></div>}
       </div>
     </nav>

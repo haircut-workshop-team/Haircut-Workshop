@@ -52,7 +52,7 @@ const authController = {
       // Hash password
       const hashedPassword = await bcrypt.hash(password, 10);
 
-      // Create user
+      // Create user - Force role to be 'customer' (only admin can create barbers)
       const newUser = await userModel.create({
         name,
         email,
@@ -83,7 +83,6 @@ const authController = {
   },
 
   // Login user
-  // Login user
   login: async (req, res) => {
     try {
       const { email, password } = req.body;
@@ -101,7 +100,7 @@ const authController = {
       if (!user) {
         return res.status(401).json({
           success: false,
-          message: "Invalid email or password", // ✅ Clear message
+          message: "Invalid email or password",
         });
       }
 
@@ -110,7 +109,7 @@ const authController = {
       if (!isValidPassword) {
         return res.status(401).json({
           success: false,
-          message: "Invalid email or password", // ✅ Clear message
+          message: "Invalid email or password",
         });
       }
 
@@ -161,7 +160,6 @@ const authController = {
     }
   },
 
-  // Request password reset
   // Request password reset
   requestPasswordReset: async (req, res) => {
     try {
@@ -225,6 +223,7 @@ const authController = {
       });
     }
   },
+
   // Reset password with token
   resetPassword: async (req, res) => {
     try {

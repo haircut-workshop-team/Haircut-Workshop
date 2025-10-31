@@ -1,5 +1,5 @@
-import { useState } from "react";
 import api, { SERVER_URL } from "../../services/api";
+import { useState } from "react";
 import "./AvatarUpload.css";
 
 function AvatarUpload({ currentAvatar, onUploadSuccess }) {

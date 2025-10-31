@@ -6,7 +6,7 @@ export default function Home({ user }) {
   return (
     <div className="home-page">
       <section className="hero">
-        <h1>Welcome to Haircut Workshop</h1>
+        <h1>Welcome to StyleSync</h1>
         <p>Professional barber services at your convenience</p>
 
         {user ? (

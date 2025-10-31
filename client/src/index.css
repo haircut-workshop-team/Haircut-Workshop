@@ -223,7 +223,6 @@ body {
 
 /* ============================================
    GLOBAL KEYFRAME ANIMATIONS
-   (Consolidated from all components)
    ============================================ */
 
 @keyframes fadeIn {
@@ -406,7 +405,6 @@ body {
   }
 }
 
-/* ⚡ SHIMMER ANIMATION - FIXED! */
 @keyframes shimmer {
   0% {
     background-position: -1000px 0;

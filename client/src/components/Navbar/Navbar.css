@@ -33,6 +33,7 @@
   position: relative;
   transition: transform 0.3s ease;
   margin: 0;
+  margin-right: auto;
   font-size: 1.5rem;
   display: inline-block;
 }
@@ -386,6 +387,10 @@
   .nav-menu {
     width: 100%;
     max-width: 100%;
+  }
+
+  .dark-mode-toggle {
+    font-size: 1.2rem;
   }
 }
 

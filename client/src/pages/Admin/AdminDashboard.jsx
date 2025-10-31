@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import dashboardService from "../../services/dashboardService";
+import Swal from "sweetalert2";
 import { formatDate, formatTime, formatCurrency } from "../../utils/formatters";
+import dashboardService from "../../services/adminService";
 import { getStatusBadgeClass, getActivityIcon } from "../../utils/helpers";
 import "./AdminDashboard.css";
 
@@ -131,7 +132,14 @@ const AdminDashboard = () => {
             <h2>Recent Bookings</h2>
             <button
               className="btn-link"
-              onClick={() => alert("View all bookings - Coming soon!")}
+              onClick={() =>
+                Swal.fire({
+                  title: "Coming Soon!",
+                  text: "View bookings feature will be available soon.",
+                  icon: "info",
+                  confirmButtonColor: "#667eea",
+                })
+              }
             >
               View All →
             </button>
@@ -291,18 +299,28 @@ const AdminDashboard = () => {
             </button>
             <button
               className="action-btn action-bookings"
-              onClick={() => {
-                alert("View bookings - Coming soon!");
-                // navigate("/admin/bookings");
-                // window.scrollTo({ top: 0, behavior: "smooth" });
-              }}
+              onClick={() =>
+                Swal.fire({
+                  title: "Coming Soon!",
+                  text: "View bookings feature will be available soon.",
+                  icon: "info",
+                  confirmButtonColor: "#667eea",
+                })
+              }
             >
               <span className="action-icon">📅</span>
               <span className="action-text">View Bookings</span>
             </button>
             <button
               className="action-btn action-reports"
-              onClick={() => alert("Generate reports - Coming soon!")}
+              onClick={() =>
+                Swal.fire({
+                  title: "Coming Soon!",
+                  text: "Generate reports feature will be available soon.",
+                  icon: "info",
+                  confirmButtonColor: "#667eea",
+                })
+              }
             >
               <span className="action-icon">📊</span>
               <span className="action-text">Reports</span>

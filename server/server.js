@@ -2,28 +2,32 @@ const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
 
+const app = express();
+
+// Middleware
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Static files
+app.use("/uploads", express.static("uploads"));
+
+// Routes
 const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
 const serviceRoutes = require("./routes/serviceRoutes");
 const adminRoutes = require("./routes/adminRoutes");
+const barberRoutes = require("./routes/barberRoutes");
+const appointmentRoutes = require("./routes/appointmentRoutes");
+const reviewRoutes = require("./routes/reviewRoutes");
 
-const app = express();
-
-// Middleware
-app.use(
-  cors({
-    origin: process.env.CLIENT_URL || "http://localhost:5173",
-    credentials: true,
-  })
-);
-app.use(express.json());
-app.use("/uploads", express.static("uploads"));
-
-// Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/services", serviceRoutes);
 app.use("/api/admin", adminRoutes);
+app.use("/api/barber", barberRoutes);
+app.use("/api/appointments", appointmentRoutes);
+app.use("/api/reviews", reviewRoutes);
 
 // 404 handler
 app.use((req, res) => {

@@ -11,24 +11,30 @@ export const formatDate = (dateString, options = {}) => {
     day: "numeric",
   };
 
-  return new Date(dateString).toLocaleDateString(undefined, {
+  // Parse date string to avoid timezone issues
+  // If the date is in format YYYY-MM-DD, parse it as UTC to prevent day shifts
+  const dateStr = dateString.split("T")[0]; // Get just the date part
+  const [year, month, day] = dateStr.split("-").map(Number);
+  const date = new Date(year, month - 1, day); // Create date in local timezone
+
+  return date.toLocaleDateString(undefined, {
     ...defaultOptions,
     ...options,
   });
 };
 
-export const formatTime = (timeString, options = {}) => {
+export const formatTime = (timeString) => {
   if (!timeString) return "";
 
-  const defaultOptions = {
-    hour: "2-digit",
-    minute: "2-digit",
-  };
+  // Parse time string (HH:MM:SS or HH:MM format)
+  const [hours, minutes] = timeString.split(":").map(Number);
 
-  return new Date(`2000-01-01T${timeString}`).toLocaleTimeString(undefined, {
-    ...defaultOptions,
-    ...options,
-  });
+  // Format to 12-hour format with AM/PM
+  const period = hours >= 12 ? "PM" : "AM";
+  const displayHours = hours % 12 || 12; // Convert 0 to 12 for midnight
+  const displayMinutes = String(minutes).padStart(2, "0");
+
+  return `${displayHours}:${displayMinutes} ${period}`;
 };
 
 export const formatCurrency = (amount, currency = "USD", locale = "en-US") => {
@@ -44,66 +50,4 @@ export const truncateText = (text, maxLength = 60) => {
   if (!text) return "";
   if (text.length <= maxLength) return text;
   return `${text.substring(0, maxLength)}...`;
-};
-
-export const formatRelativeTime = (dateString) => {
-  if (!dateString) return "";
-
-  const date = new Date(dateString);
-  const now = new Date();
-  const diffInSeconds = Math.floor((now - date) / 1000);
-
-  if (diffInSeconds < 60) return "just now";
-  if (diffInSeconds < 3600)
-    return `${Math.floor(diffInSeconds / 60)} minutes ago`;
-  if (diffInSeconds < 86400)
-    return `${Math.floor(diffInSeconds / 3600)} hours ago`;
-  if (diffInSeconds < 604800)
-    return `${Math.floor(diffInSeconds / 86400)} days ago`;
-
-  // For older dates, return formatted date
-  return formatDate(dateString);
-};
-
-export const formatPhoneNumber = (phone) => {
-  if (!phone) return "";
-
-  // Remove all non-numeric characters
-  const cleaned = phone.replace(/\D/g, "");
-
-  // Format as (XXX) XXX-XXXX for 10-digit numbers
-  if (cleaned.length === 10) {
-    return `(${cleaned.slice(0, 3)}) ${cleaned.slice(3, 6)}-${cleaned.slice(
-      6
-    )}`;
-  }
-
-  return phone;
-};
-
-export const capitalizeWords = (text) => {
-  if (!text) return "";
-
-  return text
-    .toLowerCase()
-    .split(" ")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ");
-};
-
-export const formatDuration = (minutes) => {
-  if (!minutes) return "0 min";
-
-  if (minutes < 60) {
-    return `${minutes} min`;
-  }
-
-  const hours = Math.floor(minutes / 60);
-  const mins = minutes % 60;
-
-  if (mins === 0) {
-    return `${hours}h`;
-  }
-
-  return `${hours}h ${mins}min`;
 };

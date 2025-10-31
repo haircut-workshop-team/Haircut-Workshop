@@ -4,7 +4,7 @@ const Footer = () => {
   return (
     <footer className="footer">
       <div className="footer-container">
-        <h2 className="footer-title">✂️ Haircut Workshop</h2>
+        <h2 className="footer-title">✂️ StyleSync</h2>
         <p className="footer-intro">
           Ready for a fresh look? Get in touch with our team to book your
           appointment today.
@@ -90,9 +90,7 @@ const Footer = () => {
 
         {/* Footer Bottom */}
         <div className="footer-bottom">
-          <p>
-            {new Date().getFullYear()} Haircut Workshop. All rights reserved.
-          </p>
+          <p>{new Date().getFullYear()} StyleSync. All rights reserved.</p>
           <p className="made-with-love">Made with ❤️ by Saif, Hammam & Naser</p>
         </div>
       </div>

@@ -81,4 +81,19 @@ router.post(
   userController.uploadAvatar
 );
 
+/**
+ * @route   DELETE /api/users/account
+ * @desc    Delete user account (soft or hard delete)
+ * @access  Private (Own account only)
+ * @usage   Account deletion from profile settings
+ * @header  Authorization: Bearer <token>
+ * @body    { password }
+ * @returns { success, message }
+ * @note    Requires password confirmation
+ * @note    Deletes all user data and associated records
+ * @note    Also deletes profile image if exists
+ * @note    This action cannot be undone
+ */
+router.delete("/account", authenticateToken, userController.deleteAccount);
+
 module.exports = router;

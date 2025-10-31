@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const serviceController = require("../controllers/serviceController");
-const dashboardController = require("../controllers/dashboardController");
+const adminController = require("../controllers/adminController");
 const barberController = require("../controllers/barberController");
 const authenticateToken = require("../middleware/auth");
 const authorizeRole = require("../middleware/roleCheck");
@@ -22,7 +22,7 @@ router.get(
   "/dashboard/stats",
   authenticateToken,
   authorizeRole("admin"),
-  dashboardController.getDashboardStats
+  adminController.getDashboardStats
 );
 
 /**
@@ -35,7 +35,7 @@ router.get(
   "/dashboard/activities",
   authenticateToken,
   authorizeRole("admin"),
-  dashboardController.getRecentActivities
+  adminController.getRecentActivities
 );
 
 /**

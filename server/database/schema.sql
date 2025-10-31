@@ -1,5 +1,17 @@
--- Users Table (customers, barbers, admin)
-CREATE TABLE IF NOT EXISTS users  (
+-- Drop all tables (in correct order due to foreign keys)
+DROP TABLE IF EXISTS reviews CASCADE;
+DROP TABLE IF EXISTS appointments CASCADE;
+DROP TABLE IF EXISTS working_hours CASCADE;
+DROP TABLE IF EXISTS barbers CASCADE;
+DROP TABLE IF EXISTS services CASCADE;
+DROP TABLE IF EXISTS users CASCADE;
+
+-- ========================================
+-- CREATE TABLES WITH CORRECT SCHEMA
+-- ========================================
+
+-- Users Table
+CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     email VARCHAR(100) UNIQUE NOT NULL,
@@ -7,12 +19,14 @@ CREATE TABLE IF NOT EXISTS users  (
     phone VARCHAR(20),
     role VARCHAR(20) NOT NULL CHECK (role IN ('customer', 'barber', 'admin')),
     profile_image VARCHAR(255),
+    reset_token VARCHAR(255),
+    reset_token_expires TIMESTAMP,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
---  Services Table
-CREATE TABLE IF NOT EXISTS services (
+-- Services Table
+CREATE TABLE services (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     description TEXT,
@@ -23,8 +37,8 @@ CREATE TABLE IF NOT EXISTS services (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Barbers Table (Extended info for barber users)
-CREATE TABLE IF NOT EXISTS barbers (
+-- Barbers Table
+CREATE TABLE barbers (
     id SERIAL PRIMARY KEY,
     user_id INTEGER UNIQUE REFERENCES users(id) ON DELETE CASCADE,
     specialties TEXT,
@@ -35,19 +49,20 @@ CREATE TABLE IF NOT EXISTS barbers (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Working Hours Table
-CREATE TABLE IF NOT EXISTS working_hours (
+-- Working Hours Table (WITH updated_at!)
+CREATE TABLE working_hours (
     id SERIAL PRIMARY KEY,
     barber_id INTEGER REFERENCES barbers(id) ON DELETE CASCADE,
     day_of_week INTEGER NOT NULL CHECK (day_of_week BETWEEN 0 AND 6),
     start_time TIME NOT NULL,
     end_time TIME NOT NULL,
     is_available BOOLEAN DEFAULT true,
-    UNIQUE(barber_id, day_of_week) -- Each barber can only have ONE schedule per day
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(barber_id, day_of_week)
 );
 
 -- Appointments Table
-CREATE TABLE IF NOT EXISTS appointments (
+CREATE TABLE appointments (
     id SERIAL PRIMARY KEY,
     customer_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
     barber_id INTEGER REFERENCES barbers(id) ON DELETE CASCADE,
@@ -60,9 +75,8 @@ CREATE TABLE IF NOT EXISTS appointments (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-
 -- Reviews Table
-CREATE TABLE IF NOT EXISTS reviews (
+CREATE TABLE reviews (
     id SERIAL PRIMARY KEY,
     appointment_id INTEGER UNIQUE REFERENCES appointments(id) ON DELETE CASCADE,
     customer_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
@@ -73,14 +87,25 @@ CREATE TABLE IF NOT EXISTS reviews (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Indexes for better performance
---Make searches faster
---Like an index in a book - helps find information quickly
---Especially useful for frequently searched columns
-CREATE INDEX IF NOT EXISTS idx_appointments_customer ON appointments(customer_id);
-CREATE INDEX IF NOT EXISTS idx_appointments_barber ON appointments(barber_id);
-CREATE INDEX IF NOT EXISTS idx_appointments_date ON appointments(appointment_date);
-CREATE INDEX IF NOT EXISTS idx_reviews_barber ON reviews(barber_id);
-CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
+-- ========================================
+-- CREATE INDEXES FOR PERFORMANCE
+-- ========================================
+
+CREATE INDEX idx_appointments_customer ON appointments(customer_id);
+CREATE INDEX idx_appointments_barber ON appointments(barber_id);
+CREATE INDEX idx_appointments_date ON appointments(appointment_date);
+CREATE INDEX idx_appointments_status ON appointments(status);
+CREATE INDEX idx_reviews_barber ON reviews(barber_id);
+CREATE INDEX idx_users_email ON users(email);
+CREATE INDEX idx_users_role ON users(role);
+CREATE INDEX idx_working_hours_barber ON working_hours(barber_id);
+CREATE INDEX idx_services_active ON services(is_active);
+
+
+
+
+
+
+
 
 

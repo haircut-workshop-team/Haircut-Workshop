@@ -128,6 +128,103 @@ const barberModel = {
       throw error;
     }
   },
+
+  // Get barber's dashboard stats
+  getStats: async (barberId) => {
+    try {
+      const statsQuery = `
+        SELECT 
+          COUNT(*) FILTER (WHERE appointment_date = CURRENT_DATE AND a.status != 'cancelled') as today_appointments,
+          COUNT(*) FILTER (WHERE appointment_date >= DATE_TRUNC('week', CURRENT_DATE) AND a.status != 'cancelled') as week_appointments,
+          COALESCE(SUM(s.price::numeric) FILTER (WHERE appointment_date = CURRENT_DATE AND a.status = 'completed'), 0)::numeric as today_earnings
+        FROM appointments a
+        LEFT JOIN services s ON a.service_id = s.id
+        WHERE a.barber_id = $1
+      `;
+
+      const result = await pool.query(statsQuery, [barberId]);
+
+      // Convert numeric strings to numbers for proper JSON serialization
+      const stats = result.rows[0];
+      return {
+        today_appointments: parseInt(stats.today_appointments) || 0,
+        week_appointments: parseInt(stats.week_appointments) || 0,
+        today_earnings: parseFloat(stats.today_earnings) || 0,
+      };
+    } catch (error) {
+      throw new Error(`Error fetching stats: ${error.message}`);
+    }
+  },
+
+  // Get today's appointments
+  getTodayAppointments: async (barberId) => {
+    try {
+      const query = `
+        SELECT 
+          a.*,
+          s.name as service_name,
+          s.price,
+          s.duration,
+          u.name as customer_name,
+          u.email as customer_email,
+          u.phone as customer_phone
+        FROM appointments a
+        JOIN services s ON a.service_id = s.id
+        JOIN users u ON a.customer_id = u.id
+        WHERE a.barber_id = $1 
+          AND a.appointment_date = CURRENT_DATE
+        ORDER BY a.appointment_time ASC
+      `;
+
+      const result = await pool.query(query, [barberId]);
+      return result.rows;
+    } catch (error) {
+      throw new Error(`Error fetching appointments: ${error.message}`);
+    }
+  },
+
+  // Update appointment status
+  updateStatus: async (appointmentId, status, barberId) => {
+    try {
+      const query = `
+        UPDATE appointments
+        SET status = $1
+        WHERE id = $2 AND barber_id = $3
+        RETURNING *
+      `;
+
+      const result = await pool.query(query, [status, appointmentId, barberId]);
+
+      if (result.rows.length === 0) {
+        throw new Error("Appointment not found");
+      }
+
+      return result.rows[0];
+    } catch (error) {
+      throw new Error(`Error updating status: ${error.message}`);
+    }
+  },
+
+  // Get all appointments for a barber
+  getAllAppointments: async (barberId) => {
+    try {
+      const query = `
+        SELECT 
+          a.id, a.appointment_date, a.appointment_time, a.status, a.notes,
+          u.name AS customer_name, u.email AS customer_email, u.phone AS customer_phone,
+          s.name AS service_name, s.price, s.duration
+        FROM appointments a
+        JOIN users u ON a.customer_id = u.id
+        JOIN services s ON a.service_id = s.id
+        WHERE a.barber_id = $1
+        ORDER BY a.appointment_date DESC, a.appointment_time DESC
+      `;
+      const result = await pool.query(query, [barberId]);
+      return result.rows;
+    } catch (error) {
+      throw new Error(`Error fetching all appointments: ${error.message}`);
+    }
+  },
 };
 
 module.exports = barberModel;

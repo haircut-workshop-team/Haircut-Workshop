@@ -1,6 +1,7 @@
 const barberModel = require("../models/barberModel");
 const userModel = require("../models/userModel");
 const bcrypt = require("bcrypt");
+const pool = require("../config/database");
 
 const barberController = {
   // Get all barbers
@@ -181,15 +182,12 @@ const barberController = {
         });
       }
 
-      // Delete barber profile
-      await barberModel.delete(id);
-
-      // Change user role to customer
-      await userModel.update(existingBarber.user_id, { role: "customer" });
+      // Delete the user account (this will cascade delete the barber profile and related data)
+      await userModel.deleteUser(existingBarber.user_id);
 
       res.status(200).json({
         success: true,
-        message: "Barber deleted successfully",
+        message: "Barber and associated account deleted successfully",
       });
     } catch (error) {
       console.error("Delete barber error:", error);
@@ -197,6 +195,119 @@ const barberController = {
         success: false,
         message: "Failed to delete barber",
         error: error.message,
+      });
+    }
+  },
+
+  // Get dashboard data
+  getDashboard: async (req, res) => {
+    try {
+      const userId = req.user.id;
+
+      // Get barber ID
+      const barberResult = await pool.query(
+        "SELECT id FROM barbers WHERE user_id = $1",
+        [userId]
+      );
+
+      if (barberResult.rows.length === 0) {
+        return res.status(404).json({
+          success: false,
+          message: "Barber profile not found",
+        });
+      }
+
+      const barberId = barberResult.rows[0].id;
+
+      // Get stats and appointments
+      const stats = await barberModel.getStats(barberId);
+      const appointments = await barberModel.getTodayAppointments(barberId);
+
+      // console.log(`📊 Barber ${barberId} stats:`, stats);
+
+      res.json({
+        success: true,
+        data: { stats, appointments },
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        message: error.message,
+      });
+    }
+  },
+
+  // Update appointment status
+  updateStatus: async (req, res) => {
+    try {
+      const userId = req.user.id;
+      const { id } = req.params;
+      const { status } = req.body;
+
+      if (!status) {
+        return res.status(400).json({
+          success: false,
+          message: "Status is required",
+        });
+      }
+
+      // Get barber ID
+      const barberResult = await pool.query(
+        "SELECT id FROM barbers WHERE user_id = $1",
+        [userId]
+      );
+
+      if (barberResult.rows.length === 0) {
+        return res.status(404).json({
+          success: false,
+          message: "Barber profile not found",
+        });
+      }
+
+      const barberId = barberResult.rows[0].id;
+
+      // Update status
+      const appointment = await barberModel.updateStatus(id, status, barberId);
+
+      // console.log(`✅ Appointment ${id} status updated to: ${status}`);
+
+      res.json({
+        success: true,
+        message: "Status updated successfully",
+        data: appointment,
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        message: error.message,
+      });
+    }
+  },
+
+  getAllAppointments: async (req, res) => {
+    try {
+      const userId = req.user.id;
+      // Get barber ID
+      const barberResult = await pool.query(
+        "SELECT id FROM barbers WHERE user_id = $1",
+        [userId]
+      );
+      if (barberResult.rows.length === 0) {
+        return res.status(404).json({
+          success: false,
+          message: "Barber profile not found",
+        });
+      }
+      const barberId = barberResult.rows[0].id;
+      const appointments = await barberModel.getAllAppointments(barberId);
+      res.json({
+        success: true,
+        data: appointments,
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        message: error.message,
       });
     }
   },

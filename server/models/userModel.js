@@ -179,6 +179,68 @@ const userModel = {
       throw error;
     }
   },
+
+  // Delete user account
+  deleteUser: async (userId) => {
+    const client = await pool.connect();
+    try {
+      await client.query("BEGIN");
+
+      // Delete all related data first
+      // Delete reviews by this customer
+      await client.query("DELETE FROM reviews WHERE customer_id = $1", [
+        userId,
+      ]);
+
+      // Delete appointments by this customer
+      await client.query("DELETE FROM appointments WHERE customer_id = $1", [
+        userId,
+      ]);
+
+      // If user is a barber, delete barber-related data
+      const barberCheck = await client.query(
+        "SELECT id FROM barbers WHERE user_id = $1",
+        [userId]
+      );
+
+      if (barberCheck.rows.length > 0) {
+        const barberId = barberCheck.rows[0].id;
+
+        // Delete reviews for this barber
+        await client.query("DELETE FROM reviews WHERE barber_id = $1", [
+          barberId,
+        ]);
+
+        // Delete appointments for this barber
+        await client.query("DELETE FROM appointments WHERE barber_id = $1", [
+          barberId,
+        ]);
+
+        // Delete working hours
+        await client.query("DELETE FROM working_hours WHERE barber_id = $1", [
+          barberId,
+        ]);
+
+        // Delete barber record
+        await client.query("DELETE FROM barbers WHERE id = $1", [barberId]);
+      }
+
+      // Finally, delete the user
+      const result = await client.query(
+        "DELETE FROM users WHERE id = $1 RETURNING id",
+        [userId]
+      );
+
+      await client.query("COMMIT");
+      return result.rows[0];
+    } catch (error) {
+      await client.query("ROLLBACK");
+      console.error("Error deleting user:", error);
+      throw error;
+    } finally {
+      client.release();
+    }
+  },
 };
 
 module.exports = userModel;

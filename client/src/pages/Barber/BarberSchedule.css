@@ -1,0 +1,365 @@
+.barber-schedule {
+  padding: 2rem;
+  max-width: 1100px;
+  margin: 0 auto;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+
+/* Header */
+.schedule-header {
+  text-align: center;
+  margin-bottom: 3rem;
+  animation: fadeInDown 0.6s ease-out;
+}
+
+.barber-schedule h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  color: #2c3e50;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.subtitle {
+  color: #546e7a;
+  font-size: 1.1rem;
+  font-weight: 400;
+}
+
+/* Loading */
+.loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 5rem;
+  gap: 1.5rem;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #667eea;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.loading p {
+  font-size: 1.1rem;
+  color: #666;
+  font-weight: 500;
+}
+
+/* Schedule Form */
+.schedule-form {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.days-container {
+  display: grid;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+/* Day Card */
+.day-card {
+  background: white;
+  border-radius: 16px;
+  padding: 1.75rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 2px solid transparent;
+}
+
+.day-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.15);
+  border-color: #667eea;
+}
+
+.day-card.closed {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  opacity: 0.85;
+}
+
+.day-card.closed:hover {
+  border-color: #dee2e6;
+}
+
+/* Day Header */
+.day-header {
+  margin-bottom: 1.25rem;
+}
+
+.day-toggle {
+  display: flex;
+  align-items: center;
+}
+
+.toggle-checkbox {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  accent-color: #667eea;
+  margin-right: 1rem;
+}
+
+.toggle-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex: 1;
+  cursor: pointer;
+  user-select: none;
+}
+
+.day-name {
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: #2c3e50;
+  letter-spacing: 0.3px;
+}
+
+/* Closed Badge */
+.closed-badge {
+  padding: 0.4rem 1rem;
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+  color: white;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(238, 90, 111, 0.3);
+}
+
+/* Day Body */
+.day-body {
+  padding-top: 0.5rem;
+}
+
+/* Time Inputs */
+.time-inputs {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.time-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.time-group label {
+  font-size: 0.9rem;
+  color: #546e7a;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.time-group input[type="time"] {
+  padding: 0.875rem 1rem;
+  border: 2px solid #e0e7ff;
+  border-radius: 10px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #2c3e50;
+  background: #f8faff;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.time-group input[type="time"]:hover {
+  border-color: #667eea;
+  background: white;
+}
+
+.time-group input[type="time"]:focus {
+  outline: none;
+  border-color: #667eea;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.time-separator {
+  color: #667eea;
+  font-weight: 700;
+  font-size: 1.5rem;
+  padding-top: 1.75rem;
+}
+
+/* Closed Message */
+.closed-message {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-radius: 12px;
+  border: 2px dashed #dee2e6;
+}
+
+.closed-message span {
+  font-size: 2rem;
+}
+
+.closed-message p {
+  color: #6c757d;
+  font-weight: 600;
+  font-size: 1rem;
+  margin: 0;
+}
+
+/* Save Button */
+.save-btn {
+  width: 100%;
+  padding: 1.25rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.save-btn:hover:not(:disabled) {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.save-btn:active:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.save-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.save-btn span:first-child {
+  font-size: 1.3rem;
+}
+
+.btn-spinner {
+  width: 18px;
+  height: 18px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-top: 3px solid white;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+/* Animations */
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .barber-schedule {
+    padding: 1rem;
+  }
+
+  .barber-schedule h1 {
+    font-size: 2rem;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+  }
+
+  .day-card {
+    padding: 1.25rem;
+  }
+
+  .day-name {
+    font-size: 1.1rem;
+  }
+
+  .time-inputs {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .time-group {
+    width: 100%;
+  }
+
+  .time-separator {
+    display: none;
+  }
+
+  .time-group input[type="time"] {
+    width: 100%;
+  }
+
+  .closed-message {
+    flex-direction: column;
+    text-align: center;
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .schedule-header {
+    margin-bottom: 2rem;
+  }
+
+  .barber-schedule h1 {
+    font-size: 1.75rem;
+  }
+
+  .days-container {
+    gap: 1rem;
+  }
+
+  .day-card {
+    padding: 1rem;
+  }
+
+  .toggle-label {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+}

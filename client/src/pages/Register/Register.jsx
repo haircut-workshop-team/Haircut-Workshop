@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import authService from "../../services/authService";
-import { checkPasswordStrength } from "../../utils/PasswordStrength";
+import { checkPasswordStrength } from "../../utils/passwordStrength";
 import PasswordStrength from "../../components/PasswordStrength/PasswordStrength";
 import "./Auth.css";
 
@@ -12,7 +12,6 @@ function Register({ setUser }) {
     email: "",
     password: "",
     phone: "",
-    role: "customer",
   });
   const [passwordStrength, setPasswordStrength] = useState({
     strength: 0,
@@ -54,14 +53,8 @@ function Register({ setUser }) {
       // Update user state
       setUser(response.data.user);
 
-      // Redirect based on role
-      if (response.data.user.role === "customer") {
-        navigate("/");
-      } else if (response.data.user.role === "barber") {
-        navigate("/barber/dashboard");
-      } else if (response.data.user.role === "admin") {
-        navigate("/admin/dashboard");
-      }
+      // Redirect to home (all users register as customers)
+      navigate("/");
     } catch (err) {
       setError(err.message || "Registration failed. Please try again.");
     } finally {
@@ -142,20 +135,6 @@ function Register({ setUser }) {
               autoComplete="tel"
               disabled={loading}
             />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="register-role">Register as</label>
-            <select
-              id="register-role"
-              name="role"
-              value={formData.role}
-              onChange={handleChange}
-              disabled={loading}
-            >
-              <option value="customer">Customer</option>
-              <option value="barber">Barber</option>
-            </select>
           </div>
 
           <button type="submit" className="btn btn-primary" disabled={loading}>

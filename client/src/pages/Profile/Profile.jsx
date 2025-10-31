@@ -1,13 +1,16 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
+import Swal from "sweetalert2";
 import api from "../../services/api";
-import { checkPasswordStrength } from "../../utils/PasswordStrength";
+import { checkPasswordStrength } from "../../utils/passwordStrength";
 import { formatDate } from "../../utils/formatters";
 import PasswordStrength from "../../components/PasswordStrength/PasswordStrength";
 import AvatarUpload from "../../components/AvatarUpload/AvatarUpload";
 import "./Profile.css";
 
 function Profile({ user, setUser }) {
+  const navigate = useNavigate();
   const [editMode, setEditMode] = useState(false);
   const [profileData, setProfileData] = useState({
     name: user?.name || "",
@@ -120,6 +123,91 @@ function Profile({ user, setUser }) {
   const handleAvatarUpload = (newAvatarUrl) => {
     setUser({ ...user, profile_image: newAvatarUrl });
     setMessage("Avatar updated successfully!");
+  };
+
+  // handleDeleteAccount
+  const handleDeleteAccount = async () => {
+    // First confirmation with SweetAlert2
+    const firstConfirm = await Swal.fire({
+      title: "Delete Account?",
+      html: `
+        <p>Are you sure you want to delete your account?</p>
+        <p style="color: #d33; font-weight: bold;">This action cannot be undone!</p>
+        <p>All your data will be permanently deleted including:</p>
+        <ul style="text-align: left; margin: 1rem auto; max-width: 300px;">
+          <li>Profile information</li>
+          <li>Appointments history</li>
+          <li>Reviews and ratings</li>
+        </ul>
+      `,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, I understand",
+      cancelButtonText: "Cancel",
+    });
+
+    if (!firstConfirm.isConfirmed) return;
+
+    // Second confirmation - password input
+    const passwordConfirm = await Swal.fire({
+      title: "Enter Your Password",
+      html: "<p>Please enter your password to confirm account deletion:</p>",
+      input: "password",
+      inputPlaceholder: "Enter your password",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Delete My Account",
+      cancelButtonText: "Cancel",
+      inputValidator: (value) => {
+        if (!value) {
+          return "Password is required!";
+        }
+      },
+    });
+
+    if (!passwordConfirm.isConfirmed) return;
+
+    // Show loading
+    Swal.fire({
+      title: "Deleting Account...",
+      html: "Please wait while we process your request.",
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
+
+    try {
+      await api.request("/users/account", {
+        method: "DELETE",
+        body: {
+          password: passwordConfirm.value,
+        },
+      });
+
+      // Success - show message and logout
+      await Swal.fire({
+        title: "Account Deleted",
+        text: "Your account has been permanently deleted.",
+        icon: "success",
+        confirmButtonColor: "#3085d6",
+      });
+
+      // Clear user data and redirect to home
+      localStorage.removeItem("token");
+      setUser(null);
+      navigate("/");
+    } catch (err) {
+      Swal.fire({
+        title: "Error!",
+        text: err.message || "Failed to delete account. Please try again.",
+        icon: "error",
+        confirmButtonColor: "#d33",
+      });
+    }
   };
 
   return (
@@ -279,6 +367,22 @@ function Profile({ user, setUser }) {
               {loading ? "Changing..." : "Change Password"}
             </button>
           </form>
+        </section>
+
+        {/* Delete Account Section */}
+        <section className="profile-section danger-zone">
+          <h3>Danger Zone</h3>
+          <p className="danger-warning">
+            Once you delete your account, there is no going back. Please be
+            certain.
+          </p>
+          <button
+            onClick={handleDeleteAccount}
+            className="btn btn-danger"
+            disabled={loading}
+          >
+            Delete My Account
+          </button>
         </section>
       </div>
     </div>

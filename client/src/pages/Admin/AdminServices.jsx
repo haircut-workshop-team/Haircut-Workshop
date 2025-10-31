@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import Swal from "sweetalert2";
 import serviceService from "../../services/serviceService";
 import { truncateText } from "../../utils/formatters";
 import "./AdminServices.css";
@@ -131,16 +132,31 @@ function AdminServices() {
   // Handle delete service
   const handleDelete = async (service) => {
     // Confirmation dialog
-    const confirmed = window.confirm(
-      `Are you sure you want to delete "${service.name}"?\n\nThis action cannot be undone.`
-    );
+    const result = await Swal.fire({
+      title: "Delete Service?",
+      html: `Are you sure you want to delete <strong>"${service.name}"</strong>?<br><br>This action cannot be undone.`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "Cancel",
+    });
 
-    if (!confirmed) return;
+    if (!result.isConfirmed) return;
 
     try {
       await serviceService.deleteService(service.id);
       setSuccess(`Service "${service.name}" deleted successfully!`);
       loadServices();
+
+      Swal.fire({
+        title: "Deleted!",
+        text: `Service "${service.name}" has been deleted successfully.`,
+        icon: "success",
+        timer: 2000,
+        showConfirmButton: false,
+      });
     } catch (err) {
       setError(err.message || "Failed to delete service");
       console.error("Delete error:", err);

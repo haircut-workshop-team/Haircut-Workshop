@@ -150,10 +150,23 @@ const appointmentController = {
       const startTime = parseTime(daySchedule.start_time);
       const endTime = parseTime(daySchedule.end_time);
 
+      // Get current time in minutes if the appointment is for today
+      const today = new Date();
+      const isToday = appointmentDate.toDateString() === today.toDateString();
+      const currentTimeInMinutes = isToday
+        ? today.getHours() * 60 + today.getMinutes()
+        : 0;
+
       let currentSlot = startTime;
       while (currentSlot + serviceDuration <= endTime) {
         const slotTime = formatTime(currentSlot);
         const slotEndTime = currentSlot + serviceDuration;
+
+        // Skip past time slots if booking for today
+        if (isToday && currentSlot <= currentTimeInMinutes) {
+          currentSlot += 30; // Move to next 30-minute slot
+          continue;
+        }
 
         // Check if this slot overlaps with any booked appointment
         const isBooked = bookedTimes.some((booked) => {

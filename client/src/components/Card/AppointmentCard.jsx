@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import ReviewForm from "../Review/ReviewForm";
 import ReviewCard from "../Review/ReviewCard";
+import { formatTime } from "../../utils/formatters";
 import "./AppointmentCard.css";
 
 export default function AppointmentCard({ appointment, onCancelSuccess }) {
@@ -74,7 +75,7 @@ export default function AppointmentCard({ appointment, onCancelSuccess }) {
         {new Date(appointment.appointment_date).toDateString()}
       </p>
       <p>
-        <strong>Time:</strong> {appointment.appointment_time}
+        <strong>Time:</strong> {formatTime(appointment.appointment_time)}
       </p>
       <p>
         <strong>Status:</strong> {appointment.status}

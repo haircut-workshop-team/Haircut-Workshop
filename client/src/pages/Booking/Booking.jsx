@@ -2,6 +2,7 @@ import api from "../../services/api";
 import { useState, useEffect } from "react";
 import Calendar from "react-calendar";
 import Swal from "sweetalert2";
+import { formatTime } from "../../utils/formatters";
 import "react-calendar/dist/Calendar.css";
 import "./Booking.css";
 
@@ -342,13 +343,13 @@ export default function Booking() {
                         }`}
                         onClick={() => setSelectedTime(slot)}
                       >
-                        {slot}
+                        {formatTime(slot)}
                       </button>
                     ))}
                   </div>
                 ) : (
                   <p className="no-times-msg">
-                    The barber is not available on this date.
+                    No available times for this date.
                   </p>
                 )}
               </div>
@@ -371,7 +372,7 @@ export default function Booking() {
                   <strong>Date:</strong> {selectedDate.toDateString()}
                 </p>
                 <p>
-                  <strong>Time:</strong> {selectedTime}
+                  <strong>Time:</strong> {formatTime(selectedTime)}
                 </p>
                 <p>
                   <strong>Total:</strong> {totalPrice.toFixed(2)} JOD
@@ -417,9 +418,9 @@ export default function Booking() {
                   <strong>Date:</strong> {selectedDate.toDateString()}
                 </p>
               )}
-              {step >= 3 && (
+              {step >= 3 && selectedTime && (
                 <p>
-                  <strong>Time:</strong> {selectedTime}
+                  <strong>Time:</strong> {formatTime(selectedTime)}
                 </p>
               )}
             </div>
